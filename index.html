@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>enquest</title>
+  <meta charset="utf-8">  
+  <meta name="author" content="Liana"/>  
+<meta name="Pasteleria Rey" content="Pasteleria, donde puedes comprar dulces sabrosos y de bajo precio"/>
+<meta name="keywords" content="el mundo de los dulces"/>  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+ <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+ <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=es&key=AIzaSyBqOnP-FCw6XYKFKDotTGlFujogNdDlNsc"></script>
+<script>
+function ponerImagen() {
+	     var imagenADibujar=document.getElementById("imagen");
+	     var reader = new FileReader();
+		 reader.onload = function (e) {					  
+		 document.getElementById("imagen1").setAttribute("src" , e.target.result);
+	     }
+	     reader.readAsDataURL(imagenADibujar.files[0]);
+	}
+
+function enviar(){
+	if(document.formulario.checkValidity() == true){
+		document.querySelector("#boton").style.display = "none";
+		document.querySelector("#resultado").innerHTML = "<center><img class='espere' src='img/cargando.gif'></center>";
+		document.querySelector("#resultado").setAttribute("class","resultado");
+		var request = new XMLHttpRequest();
+
+		request.open('POST', 'enviar.php', true);
+		//true es que hay datos adjuntos
+
+		request.onreadystatechange = function(){
+
+			if(request.readyState == XMLHttpRequest.DONE){
+				
+				if(request.status == 200){
+					document.querySelector("#resultado").innerHTML = "";
+					alert("Su solicitud ha sido procesada con éxito.");
+					document.querySelector("#boton").style.display = "block";
+					document.formulario.reset();
+					document.querySelector("#resultado").setAttribute("class","");
+					
+					
+				}else{
+					alert("Se ha producido un error, por favor inténtelo de nuevo.")
+					document.querySelector("#resultado").innerHTML = "";
+					document.querySelector("#boton").style.display = "block";
+					document.querySelector("#resultado").setAttribute("class","");
+				}
+			}
+		}
+	}else{
+		alert("Revise los datos, por favor.")
+	}
+	var formData = new FormData(document.formulario);
+	request.send(formData);
+	
+}
+</script>
+
+ <style> 
+ 
+/* CSS Document */
+body{
+	background-image:url(imagen/fondo1.jpg);
+	background-repeat:repeat-x;
+	background-size:auto 100%;
+	background-color:#a1c1df;		
+	width:100%;
+	height:1200px;
+	font-family:Verdana, Geneva, sans-serif;	
+	margin:0 auto;		
+	box-sizing:border-box;
+}	
+#contenido1{
+	width:100%;
+	
+}
+ 
+
+  /* Menú */
+ nav{
+		background-color:#6699cc;
+		width:100%;		
+		font-size:1.2em;					
+		height:40px;
+		margin-top:10px;			
+		box-sizing:border-box;		
+		
+	}
+	nav a{
+		display:block;
+		color:#fff;
+		width:10%;;
+		margin-left:7%;
+		box-sizing:border-box;
+		text-decoration:none;
+		float:left;
+		text-align:center;
+		padding-top:12px;
+		
+		
+	}
+	nav a:hover{
+		display:block;
+		color:#ffee00;
+		transition:2s;
+	}
+  .icono {
+	margin-left:500px;
+	/* [disabled]box-sizing:border-box; */	
+  }
+	
+	
+	footer{
+		height:80px;
+		background-color:#fff;
+	}
+	.icon1{
+		width:100%;
+		padding-left:60%;
+	}
+	.logo{
+		width:225px;
+		padding-top:2px;				
+		box-sizing:border-box;
+	}
+	p,li{
+		font-size:0.8em;
+	}
+	
+	
+	.caja{
+	width:90%;			
+	box-sizing:border-box;
+}
+
+#caja{
+	width:40%;
+	height:100px;	
+	color:#333;
+	margin-left:115px;			
+	box-sizing:border-box;
+}
+#map1{
+	width:80%;
+	float:left;
+}
+form{
+	width:80%;
+	float:left;
+}
+#boton{
+	width:30%;
+	height:30px;
+	margin-top:0px;
+	position:relative;
+	float-left:5%;
+	}
+	.boton{
+		width:100%;
+		}
+
+	 </style>
+ 
+</head>
+<body onload="iniciar()">
+<div class="container-fluid">
+
+	<div class="row menu">
+		<div class=" col-sm-6 ">                   
+	   
+		<div style="float:left;"><h1 style="color:#039">Albirpediatra</h1>
+        <h5>Consulta de pediatria de Pedro Jesus Alcala </h5></div>    
+    	
+        </div>      
+       	<div class=" col-sm-6">
+	  	</div>
+        <div style="clear:both"></div> 
+      </div>	
+ </div> 
+<nav class="navbar navbar-expand-md sticky-top" style="background-color:#6699cc;">	 
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+		<i class="fas fa-caret-square-down " style="color:#256FA0;"></i>
+	  </button>
+	  <!-- Navbar links -->
+	  <div class="collapse navbar-collapse" id="collapsibleNavbar" >
+		<ul class="navbar-nav">
+		  <li class="nav-item">
+			<a class="nav-link" href="#index">Inicio</a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link" href="#servicios">Servicios</a>
+		  </li>
+		  <li class="nav-item" >
+			<a class="nav-link" href="#acercadenosotros">Especialistas</a>
+		  </li> 	  
+		  <li class="nav-item" >
+			<a class="nav-link" href="enlaces.html">Enlaces</a>
+		  </li> 
+          <li class="nav-item" >
+			<a class="nav-link" href="#contacto">Contacto</a>
+		  </li> 		  
+		</ul>
+		
+	  </div> 
+       <div style="float:left;" class="d-none d-sm-block">
+		<div class="icono"><i class="fab fa-facebook "></i></div>
+		
+	  </div>
+      </nav>
+<div class="container-fluid">
+	<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="5000" data-pause="false" >
+	  <!-- Indicators -->
+	  <ul class="carousel-indicators">
+		<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+		<li data-target="#myCarousel" data-slide-to="1"></li>
+		<li data-target="#myCarousel" data-slide-to="2"></li>
+        <li data-target="#myCarousel" data-slide-to="3"></li>
+	  </ul>
+	  
+	  <!-- The slideshow -->
+	  <div class="carousel-inner">
+		<div class="carousel-item active">
+			<div id="contenido1">
+            <img src="imag/foto1.jpg">				
+			</div>
+		</div>
+		<div class="carousel-item">
+			<div id="contenido2">
+				<img src="imag/foto2.jpg">
+			</div>
+		</div>
+		<div class="carousel-item">
+			<div id="contenido3">
+				<img src="imag/foto3.jpg">
+			</div>
+		</div>	  
+	  <div class="carousel-item">
+			<div id="contenido4">
+				<img src="imag/foto4.jpg">	
+			</div>
+		</div>
+	  </div>
+	  <!-- Left and right controls -->
+	  <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+		<span class="carousel-control-prev-icon"></span>
+	  </a>
+	  <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+		<span class="carousel-control-next-icon"></span>
+	  </a>
+	</div>	
+    <section>
+    <p><strong>Lo que nos ofrece un hijo</strong></p><hr>
+   		
+   <div class="container-fluid">
+   	<div class="row menu">
+		<div class=" col-sm-8 ">                   
+	  <!-- arachin gicy -->	      
+        <ul>
+        	<li><strong>Amor ciego</strong> </li>
+            <li><strong>Fe ciega</strong> </li>
+            <li><strong>La excitación de descubrir nuevas cosas</strong></li>
+            <li><strong>Emociones intensas</strong> </li>
+             </ul>
+            <p>Le invitamos a que se ponga en contacto con nosotros para  concertar una entrevista sin compromiso. Nuestro teléfono es  966.86.48.60 o bien envíenos un email <a href="albirpediatra@gmai.com">albirpediatra@gmail.com</a>.
+</p> 
+	<p><strong>Lo que ofrecemos a un hijo</strong></p><hr>
+     <ul>
+        	<li><strong>Amor incondicional</strong> </li>
+            <li><strong>Autoestima</strong> </li>
+            <li><strong>Valores y tradiciones</strong></li>
+            <li><strong>Alegría de vivir</strong> </li>
+            <li><strong>Buena salud</strong> </li>
+            <li><strong>Un entorno seguro</strong> </li>
+            <li><strong>Habilidades y destreza</strong> </li>
+             </ul>     
+          <p>(Asociación Americana de Pediatría. El cuidado y la educación
+
+del niño de los cero a los 5 años. Ed. Medici)</p>   	
+        </div>      
+       	<div class=" col-sm-3 offsel-sm-1"> 
+			<div class="icono1"><img src="imag/foto6.jpg"</i></div>
+	  	</div>
+        <div style="clear:both"></div> 
+      </div>	
+ </div>
+ </section>
+ <section2>
+ <div class="container-fluid">
+ <section id="acercadenosotros">
+ <p><strong>Especialistas</strong></p><hr>
+   
+   	<div class="row ">
+		<div class=" col-sm-8 ">                   
+	  <!-- arachin gicy -->	
+       
+   	 <p><strong>Especialista en Pediatría y sus Áreas Específicas</strong>.<br>
+     <ul>
+     <li>&nbsp;Residencia realizada en el Hospital General Universitario de Alicante.</li>
+     <li>&nbsp;Rotatorio complementario en Sección de Neumología y Alergia Infantil, Hospital Materno-Infantil 12 de Octubre. Madrid.</li>
+     <li>&nbsp;Unidad Acreditada por la European Respiratory Society (ERS).</li></ul></p>
+
+	<p><strong>Doctor en Medicina</strong>.<br>
+     <ul>
+     <li>&nbsp;Por la Universidad Miguel Hernández, calificación obtenida: Sobresaliente Cum Laude por unanimidad.</li></ul></p>
+     
+     
+     <p><strong>Máster en Salud Pública</strong>.<br>
+     <ul>
+     <li>&nbsp;Por la Universidad Miguel Hernández.</li></ul></p>     
+     
+     
+     <p><strong>Actividad Profesional:</strong>.<br>
+     <ul>
+     <li>&nbsp;Pediatra.</li></ul></p>
+	
+                              	
+        </div>      
+       	<div class=" col-sm-3 offsel-sm-1"> 
+			<div class="icono1"><img src="imag/foto7.jpg"></i></div>
+	  	</div>
+        <div style="clear:both"></div> 
+      </div>	
+ </div>  
+</section2>
+
+<section3>
+<div class="container-fluid">
+ <section id="servicios">
+ <p><strong>LISTA DE SERVICIOS:</strong></p><hr>
+   
+   	<div class="row ">
+		<div class=" col-sm-8 ">                   
+	  <!-- arachin gicy -->	      
+   	 
+     <ul>
+     <li>&nbsp;Pedriatría General.</li>
+     <li>&nbsp;Revisión del niño sano.Detección sistemática de los principales problemas de salud.</li>
+     <li>&nbsp;Orientación para el cuidado y la educación del niño desde el primer dia de adolescencia.</li>
+     <li>&nbsp;Pediatría del comportamiento y del desarrollo.</li>
+     <li>&nbsp;Asistencia del niño asmático, con problemas alérgicos y/o trastornos respiratorios de repetición.</li>
+     <li>&nbsp;Espirometría. Estudio de la función pulmonar adaptada para niños/as colaboradores desde los 4 años.</li>
+     <li>&nbsp;Estudio mediante pruebas cutáneas (prick test) de la sensiblización alérgica de los principales alergenos respiratorios y alimentarios en la infancia.</li>
+     </ul></p>
+                              	
+        </div>      
+       	<div class=" col-sm-3 offsel-sm-1"> 
+			<div class="icono1"><img src="imag/foto8.jpg"></i></div>
+	  	</div>
+        <div style="clear:both"></div> 
+      </div>	
+ </div>  
+ </section4>
+
+
+<section1>
+<div class="container-fluid">
+<section1 id="contacto" >
+  
+<p><strong>CONTACTAR</strong></p><hr>
+  <p>En este formulario puede ponerse en contacto con nosotros para sus propuestas, dudas o sugerencias.<br> Muchas gracias</p>
+<div class="row" >
+    	<div class="col-12 col-sm-6 ">
+	<form name="formulario" action="http://10.10.2.1/recibir.php" method="post">	
+	<div >		
+			<div class="campo">
+				<label for="nombre">Nombre:</label><br/>			
+				<input type="text" name="nombre" placeholder=""/>
+			</div>
+            	
+			<div class="campo">
+				<label for="email">Email:</label><br/>			
+				<input type="email" name="email"/>
+			</div>		
+		
+			<div class="campo">
+				<label for="tlf">Comentarios:</label><br/>			
+				 <textarea name="message" cols="30" rows="8" class="caja" ></textarea>
+			</div>
+           
+				
+			<div class="campo">
+				<label for="imgppal">
+					Adjuntar archivo: 
+				</label><br/>			
+				<input type="file" id="imagen" name="imagen" onchange="ponerImagen();"/>
+			</div>
+             
+			</div>	
+				<div class="campo">
+				<p>
+				Imagen seleccionada:
+				</p>
+				<img id="imagen1" src=""/>
+			</div><br><br>
+			
+	<div style="clear:both"></div>
+    
+             <div class="boton">
+				<input id="boton" type="button" value="Enviar" onclick="enviar();"/>
+				
+	</div><br>
+            <p>Le informamos que los datos personales obtenidos mediante este formulario, así como su dirección de correo electrónico, han sido incorporados en un fichero del cual es responsable Enquest Estudios S.L.U. con la finalidad de atender sus consultas y enviarle información relacionada con la entidad que pudiera ser de su interés.
+Enquest Estudios S.L.U se compromete a usar los datos recogidos mediante este formulario, únicamente para la finalidad anteriormente mencionada. El interesado declara tener conocimiento del destino y uso de los datos personales recogidos mediante la lectura de la presente cláusula. El envío de este e-mail implica la aceptación de las cláusulas expuestas. Si desea ejercer los derechos de acceso, rectificación, cancelación u oposición en los términos establecidos en la ley Orgánica 15/1999, puede hacerlo a la siguiente dirección César Elguezábal, 39-2º izquierda. 03001 (Alicante).</p>	
+						
+	</form>
+    </div>
+
+<div class="col-12 col-sm-4">
+<div id="menu1>"
+<p><strong>Direccion:</strong>&nbsp;&nbsp;<strong>/Av de l`Albir, 2, 03581 Albir(Alicante)</strong></p>
+<p><strong>Teléfono:</strong>&nbsp;&nbsp;<strong>96 686 48 60</strong></p>
+<p><strong>Localización:</strong></p><br><br><br>
+</div>
+
+<div id="map1">
+<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d49906.98042652242!2d-0.066288!3d38.575558!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x1f82c0734d005030!2sPedro+Jes%C3%BAs+Alcal%C3%A1+Minagorre!5e0!3m2!1ses!2sus!4v1561400967081!5m2!1ses!2sus" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+</div>
+<div style="clear:both;"></div>
+<div id="resultado" class=""></div>
+</div>
+</div>
+ </div>
+  
+ </section1>
+ <footer>
+ <div class="container-fluid">
+	<div class="row ">
+		<div class=" col-sm-8">                   
+	  <!-- arachin gicy -->	  
+		<div style="float:left;">ENQUEST ESTUDIOS<hr>
+        <h6>Av de l`Albir, 2, 03581 Albir(Alicante)-Teléfono 96 686 48 60</h6>
+        </div>    
+    	
+        </div>      
+       	<div class=" col-sm-4 logo"></div>
+        <div style="clear:both"></div> 
+      </div>	
+ </div> 
+  </footer>
+   
+  	
+</body>
+
+</html>
